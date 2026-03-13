@@ -1,5 +1,6 @@
 import pyodbc
 
+
 def get_sql_driver():
     drivers = pyodbc.drivers()
     for driver in drivers:
@@ -22,41 +23,63 @@ def get_connection():
     return pyodbc.connect(connection_string)
 
 
-def save_cv_to_sql(extracted_json, ai_score, candidate_name):
+def save_cv_to_sql(extracted_json, ai_score, file_name):
 
     try:
+
         connection = get_connection()
         cursor = connection.cursor()
 
-        name = extracted_json.get('Name') or candidate_name
-        skills_str = ", ".join(extracted_json.get('Skills', []))
+        # ===== mapping dữ liệu từ Gemini JSON =====
 
-        input_data = (
-            name,
-            skills_str,
-            extracted_json.get('Experience', 0),
-            extracted_json.get('Education', 'None'),
-            extracted_json.get('Certifications', 'None'),
-            extracted_json.get('Job_Role', 'None'),
-            extracted_json.get('Salary_Expectation', 0),
-            extracted_json.get('Projects_Count', 0),
-            ai_score
-        )
+        skills = extracted_json.get("skills", "")
+        if isinstance(skills, list):
+            skills = ", ".join(skills)
+
+        experience = extracted_json.get("experience_years", 0)
+
+        education = extracted_json.get("education", "None")
+
+        certification = extracted_json.get("certifications", "None")
+
+        job_role = extracted_json.get("job_role", "None")
+
+        projects = extracted_json.get("projects", 0)
+
+
+        # ===== SQL INSERT =====
 
         sql_query = """
-            INSERT INTO Resumes (
-                Candidate_Name, Skill, Experience_Years, Education,
-                Certification, Job_Role, Salary_Expectation,
-                Project_Count, Score
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO Resumes (
+            Skill,
+            Experience_Years,
+            Education,
+            Certification,
+            Job_Role,
+            Project_Count,
+            Score,
+            File_Name
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """
 
-        cursor.execute(sql_query, input_data)
+        cursor.execute(sql_query, (
+            skills,
+            experience,
+            education,
+            certification,
+            job_role,
+            projects,
+            ai_score,
+            file_name
+        ))
+
         connection.commit()
+
+        cursor.close()
         connection.close()
 
-        print("Đã lưu vào database thành công.")
+        print("Đã lưu CV vào database thành công.")
 
     except Exception as e:
         print(f"DATABASE ERROR: {e}")
