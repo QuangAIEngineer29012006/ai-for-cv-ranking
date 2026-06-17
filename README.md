@@ -53,24 +53,27 @@ The pipeline is split into three main stages: **Data Preparation & Model Trainin
 │   └── src/components/        # Home, Dashboard, History UI components
 ├── requirements.txt           # Python application dependencies
 └── README.md                  # Project documentation
-
+```
 ## 🚀 Environment Setup & Installation
 Backend Setup
 Clone the repository and install the mandatory Python frameworks:
-
-## Bash
+```
+Bash
    pip install pandas scikit-learn joblib sentence-transformers google-generativeai
    pip install PyPDF2 pdf2image pytesseract pyodbc
+```
 Ensure you have Tesseract OCR installed locally on your operating system and append it to your system PATH variables.
 
 ## Configure your API environment keys:
-
+```
 Bash
    set GEMINI_API_KEY=your_production_api_key_here
+```
 ## Frontend Setup
 Navigate to the frontend directory, install npm packages, and run the client-side server:
-
+```
 Bash
    cd frontend
    npm install
    npm run dev
+```
