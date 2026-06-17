@@ -1,4 +1,3 @@
-# AI-for-cv-ranking
 # AI-Powered CV Screening & Ranking Pipeline
 
 An end-to-end, enterprise-grade CV screening solution that combines traditional Machine Learning, Semantic Embeddings, and Generative AI to automate, score, and rank candidate resumes in real-time. 
