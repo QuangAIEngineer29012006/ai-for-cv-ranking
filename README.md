@@ -126,7 +126,7 @@ JSON{
   "projects": 3
 }
 ```
-## 2. Combined Pipeline Vector Format (Pandas Compatible)
+## Combined Pipeline Vector Format (Pandas Compatible)
 ```
 Pythoncv_dict = {
     "Skills": str,
